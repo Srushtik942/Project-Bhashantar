@@ -8,9 +8,13 @@ const data = new OpenAI({apiKey: process.env.OPENROUTER_API_KEY,baseURL: baseURL
 // creating embbedings using openai api
 const createEmbedding = async(text)=>{
     try{
-        const result = await data.embeddings.create({ model: process.env.EMBEDDING_MODEL, input: text });
-        console.log("Embedding created successfully:", result.data[0].embedding);
-        return result.data[0].embedding;
+        const result = await data.embeddings.create({
+             model: process.env.EMBEDDING_MODEL,
+             input: text
+             });
+        const vector = result.data[0].embedding;
+        console.log("Embedding created successfully",vector.length);
+        return vector;
 
     }catch(error){
         console.error("Error creating embedding:", error.message);
