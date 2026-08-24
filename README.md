@@ -19,3 +19,23 @@
 -  Insert 3–5 chunks manually into the collection
 -  Run a similarity search against them
 -  Connect retrieved chunks to the LLM (first RAG round-trip)
+
+```
+### Day 2 — Core RAG loop working ✅
+
+Full pipeline confirmed end-to-end:
+question → embed (OpenRouter) → retrieve (Qdrant) → LLM answers using
+only retrieved context → source cited.
+
+Test query: "How many paid leave days do I get?"
+→ Correctly answered using only the relevant chunk, ignored unrelated
+  retrieved chunks (WFH, insurance).
+
+**Next up:** PDF ingestion — replace hand-typed test chunks with real
+document chunking + upload.
+
+![Bhashantar_Score](image.png)
+![alt text](image-1.png)
+
+
+```
