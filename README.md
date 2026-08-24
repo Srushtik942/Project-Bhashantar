@@ -1,5 +1,5 @@
 ## Progress Logs
-
+```
 ## Day 1 :
 
 
@@ -19,6 +19,7 @@
 -  Insert 3–5 chunks manually into the collection
 -  Run a similarity search against them
 -  Connect retrieved chunks to the LLM (first RAG round-trip)
+```
 
 ```
 ### Day 2 — Core RAG loop working ✅
@@ -33,9 +34,7 @@ Test query: "How many paid leave days do I get?"
 
 **Next up:** PDF ingestion — replace hand-typed test chunks with real
 document chunking + upload.
-
-![Bhashantar_Score](image.png)
-![alt text](image-1.png)
-
-
 ```
+
+![alt text](image-1.png)
+![alt text](image.png)
