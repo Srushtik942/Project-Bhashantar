@@ -29,6 +29,8 @@ router.post("/ask",async(req,res)=>{
 
         const vector = await createEmbedding(question);
 
+        console.log("vector",vector);
+
         // retrive top matching chunks
         const result = await qdrant.query("bhashantar_documents",{
             query: vector,
@@ -36,19 +38,23 @@ router.post("/ask",async(req,res)=>{
             with_payload: true
         });
 
+        console.log("result",result);
+
        const context = result.points
       .map((r, i) => `[${i + 1}] ${r.payload.text} (Source: ${r.payload.source})`)
       .join("\n");
 
       // 3. for building a grounded prompt
     const prompt = `Answer the question using ONLY the context below. If the answer isn't in the context, say you don't know.
+    Respond in the same language the question was asked in.
 
-Context:
-${context}
 
-Question: ${question}
+           Context:
+           ${context}
 
-Answer:`;
+          Question: ${question}
+
+       Answer:`;
 
 
 // ask the llm
@@ -60,7 +66,7 @@ const response = await data.chat.completions.create({
         content:prompt
     }]
 });
-console.log()
+console.log("response",response)
 
 
 res.json({
