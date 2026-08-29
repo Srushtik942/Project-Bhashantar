@@ -78,7 +78,6 @@ document chunking + upload.
 - OpenRouter key accidentally logged via a stray `console.log` of the full client
   object — rotated the key, removed the log.
 
-image-3.png
-image-2.png
-
 ```
+![alt text](image-5.png)
+![alt text](image-6.png)
