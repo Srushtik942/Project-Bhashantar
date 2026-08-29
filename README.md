@@ -38,3 +38,46 @@ document chunking + upload.
 
 ![alt text](image-1.png)
 ![alt text](image.png)
+
+
+```
+### Day 3 - PDF ingestion + Ask API
+
+**What got built:**
+- **Chunking utility** (`src/utils/chunker.js`) — splits raw extracted text into
+  ~500-word chunks with 50-word overlap, so meaning isn't lost at chunk boundaries.
+
+- **PDF upload route** (`POST /api/upload`) — accepts a real PDF via multipart
+  form-data, extracts text with `pdf-parse`, chunks it, embeds each chunk, and
+  upserts all of them into Qdrant in a single batch.
+
+- **Ask route** (`POST /api/ask`) — replaces the old hardcoded `rag-test.js` script.
+  Takes `{ "question": "..." }` in the request body, embeds it, retrieves matching
+  chunks from Qdrant, and returns a grounded LLM answer with sources — callable by
+  any client (Postman, a future frontend) without editing code.
+
+**Verified working:**
+- Uploaded a real PDF (`ResearchPaper.pdf`) → 13 chunks extracted, embedded, and
+  stored automatically (`200 OK`, confirmed on Qdrant dashboard point count).
+
+- `/api/ask` tested in Postman — returns a grounded answer + source list for a
+  fresh question, no script editing required.
+
+**Key decisions:**
+- File uploads kept in memory (`multer.memoryStorage()`), not written to disk —
+  only the extracted text is needed long-term.
+- Chunk overlap added to avoid splitting a sentence across two chunks.
+- `/ask` built as a stateless POST endpoint (question in → answer out), reusable
+  by any future client instead of a one-off script.
+
+**Bugs fixed:**
+- Stray top-level `await` outside a function (leftover from a copy-paste) — syntax error.
+- Qdrant lost its collection after a restart — container was re-run from a different
+  working directory, so the volume mount pointed at an empty folder. Fix: always
+  launch Qdrant from the same project root.
+- OpenRouter key accidentally logged via a stray `console.log` of the full client
+  object — rotated the key, removed the log.
+
+![alt text](image-2.png)
+![alt text](image-3.png)
+```
